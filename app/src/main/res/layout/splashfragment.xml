@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ffff">
+
+    <ImageView
+        android:layout_width="400dp"
+        android:layout_height="150dp"
+        android:src="@drawable/pigimage"
+        />
+    <ImageView
+        android:layout_width="400dp"
+        android:layout_height="150dp"
+        android:src="@drawable/dice"
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/PLAY"
+        android:text="Play"
+        android:textStyle="italic"
+        android:textAllCaps="false"
+        android:layout_marginTop="20dp"
+        android:textSize="40dp"
+        android:background="@color/colorPrimary"
+        />
+    <Button
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textStyle="italic"
+        android:text="Play with friends"
+        android:id="@+id/pwf"
+        android:textAllCaps="false"
+        android:textSize="40dp"
+        android:background="@color/colorPrimary"/>
+    <Button
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textStyle="italic"
+        android:text="Rules"
+        android:textSize="40dp"
+        android:background="@color/colorPrimary"/>
+
+
+</LinearLayout>
