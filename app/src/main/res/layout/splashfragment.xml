@@ -22,11 +22,11 @@
         android:text="Play"
         android:textStyle="italic"
         android:textAllCaps="false"
-        android:layout_marginTop="20dp"
+        android:layout_margin="10dp"
         android:textSize="40dp"
         android:background="@color/colorPrimary"
         />
-    <Button
+    <!--<Button
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -35,9 +35,9 @@
         android:id="@+id/pwf"
         android:textAllCaps="false"
         android:textSize="40dp"
-        android:background="@color/colorPrimary"/>
+        android:background="@color/colorPrimary"/>-->
     <Button
-        android:layout_marginTop="10dp"
+        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:textStyle="italic"

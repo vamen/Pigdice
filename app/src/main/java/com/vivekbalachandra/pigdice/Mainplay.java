@@ -28,6 +28,7 @@ public class Mainplay extends android.support.v4.app.Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.i("onresume","called");
         ternscore=0;
         userscore=0;
         cpuscore=0;
@@ -41,7 +42,6 @@ public class Mainplay extends android.support.v4.app.Fragment {
     Button Hold;
     ImageView Dice;
     TextView status;
-    Timer timer = new Timer();
     int userscore = 0;
     int cpuscore = 0;
     int id[] = {
@@ -75,11 +75,19 @@ public class Mainplay extends android.support.v4.app.Fragment {
             cpuscoretext.setText(cpuscore + ".");
             FragmentManager fragmentManager=getFragmentManager();
             Result r=new Result(cpuscore<userscore);
-            r.show(fragmentManager,"result");
+            r.show(fragmentManager, "result");
             Hold.setVisibility(View.VISIBLE);
             Roll.setVisibility(View.VISIBLE);
+            Hold.setEnabled(true);
+            Roll.setEnabled(true);
+            userscore=0;
+            cpuscore=0;
+            yourscoretext.setText(0 + " ");
+            cpuscoretext.setText(0 + " ");
+            Terntext.setText(0 + "");
             ternscore = 0;
             tern = 0;
+
 
         }
     };
@@ -98,9 +106,11 @@ public class Mainplay extends android.support.v4.app.Fragment {
     }
 
     void setImage() {
+        Log.d("rolldone", "error  check in set image " + count);
         if(count==0)Roll.setEnabled(false);
         count++;
         int i = new Random().nextInt(6);
+        Dice.refreshDrawableState();
         Dice.setImageResource(id[i]);
 
         if (count < 6) {
@@ -125,10 +135,12 @@ public class Mainplay extends android.support.v4.app.Fragment {
                     return;
 
                 } else {
+                    handler.removeCallbacks(runnable);
+                    handler.removeCallbacks(mRunnable);
+                    handler.post(mRunnable);
                     Roll.setEnabled(true);
                     Hold.setEnabled(true);
-                    handler.removeCallbacks(runnable);
-                    status.setText("Your_Tern :");
+                    status.setText("Your Tern :");
                     ternscore = 0;
                     flag = false;
                     count=0;
@@ -145,12 +157,6 @@ public class Mainplay extends android.support.v4.app.Fragment {
                 if (!flag) Roll.setEnabled(true);
                 Toast.makeText(getActivity(), "score is " + score + 1, Toast.LENGTH_SHORT).show();
                 Log.d("rolldone", "error  check in run");
-                if(flag)
-                {
-
-                        status.setText("cpu win");
-                //        handler.removeCallbacks(runnable);
-                }
                 return;
             }
 
