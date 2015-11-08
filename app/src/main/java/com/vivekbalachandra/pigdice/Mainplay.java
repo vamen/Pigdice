@@ -70,9 +70,10 @@ public class Mainplay extends android.support.v4.app.Fragment {
         @Override
         public void run() {
             Log.d("cpurolldone", "error  check");
-            handler.removeCallbacks(runnable);
+            handler.removeCallbacks(timeRunnable);
             cpuscore = cpuscore + ternscore;
             cpuscoretext.setText(cpuscore + ".");
+            staysleep();
             FragmentManager fragmentManager=getFragmentManager();
             Result r=new Result(cpuscore<userscore);
             r.show(fragmentManager, "result");
@@ -82,15 +83,25 @@ public class Mainplay extends android.support.v4.app.Fragment {
             Roll.setEnabled(true);
             userscore=0;
             cpuscore=0;
+            flag=false;
             yourscoretext.setText(0 + " ");
             cpuscoretext.setText(0 + " ");
             Terntext.setText(0 + "");
             ternscore = 0;
             tern = 0;
-
+           handler.removeCallbacks(mRunnable);
 
         }
     };
+
+    private void staysleep() {
+        TextView substatus= (TextView) root.findViewById(R.id.substatus);
+        for(int i=0;i<5000;i++)
+        {
+            ;
+        }
+    }
+
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -118,28 +129,40 @@ public class Mainplay extends android.support.v4.app.Fragment {
             handler.postDelayed(runnable, 500L);
 
         } else {
-            if (i%6 == 0) {
 
+            Log.i("PASS","pass1");
+            if (i == 0) {
+                handler.removeCallbacks(runnable);
+                Log.i("PASS","pass2");
                 Snackbar.make(relativeLayout, "Turn Change", Snackbar.LENGTH_LONG).show();
+                Log.i("PASS", "pass3");
                 if (!flag) {
                     status.setText("CPU-Tern");
                     flag = true;
                     ternscore = 0;
                     flag=true;
-                    Roll.setEnabled(false);
-                    Hold.setEnabled(false);
+                    rolling=false;
+                    Roll.setEnabled(true);
                     tern=0;
-                    handler.removeCallbacks(runnable);
-                    startcpu();
+                    Log.i("PASS", "pass4");
                     count=0;
+                    setupcputer();
+                    Thread thread=new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            startcpu();
+                        }
+                    });
+                    thread.run();
+                    Log.i("PASS", "pass5");
                     return;
 
                 } else {
-                    handler.removeCallbacks(runnable);
                     handler.removeCallbacks(mRunnable);
                     handler.post(mRunnable);
                     Roll.setEnabled(true);
                     Hold.setEnabled(true);
+                    rolling=false;
                     status.setText("Your Tern :");
                     ternscore = 0;
                     flag = false;
@@ -154,7 +177,10 @@ public class Mainplay extends android.support.v4.app.Fragment {
                 count = 0;
                 rolling = false;
                 //Roll.setEnabled(true);
-                if (!flag) Roll.setEnabled(true);
+                if (!flag) {
+                    Roll.setEnabled(true);
+                    flag=false;
+                }
                 Toast.makeText(getActivity(), "score is " + score + 1, Toast.LENGTH_SHORT).show();
                 Log.d("rolldone", "error  check in run");
                 return;
@@ -164,6 +190,11 @@ public class Mainplay extends android.support.v4.app.Fragment {
         }
         Log.d("rolldone", "error  check in set image " + count);
         return;
+    }
+
+    private void setupcputer() {
+        Hold.setVisibility(View.GONE);
+        Roll.setVisibility(View.GONE);
     }
 
     @Override
@@ -193,7 +224,8 @@ public class Mainplay extends android.support.v4.app.Fragment {
     void startcpu() {
         tern = 1;
         long val = 5000L;
-
+        handler.removeCallbacks(runnable);
+        Log.i("PASS", "pass6");
         while (tern < 6) {
             if (rolling == false && flag == true) {
                 handler.postDelayed(timeRunnable, val * tern);
@@ -201,7 +233,9 @@ public class Mainplay extends android.support.v4.app.Fragment {
                 tern++;
             }
         }
+        Log.i("PASS", "pass7");
         handler.postDelayed(mRunnable,(tern+2)*val);
+
         //handler.removeCallbacks(runnable);
 
     }
@@ -233,8 +267,7 @@ public class Mainplay extends android.support.v4.app.Fragment {
                 yourscoretext.setText(userscore + " ");
                 status.setText("CPU TERN :");
                 Snackbar.make(relativeLayout, "Turn Change", Snackbar.LENGTH_LONG).show();
-                Hold.setVisibility(View.GONE);
-                Roll.setVisibility(View.GONE);
+                setupcputer();
                 status.setText("Your Tern");
                 startcpu();
 
